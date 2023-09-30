@@ -2,12 +2,23 @@ import express, {Request, Response, NextFunction, Application, ErrorRequestHandl
 import { Server } from "http";
 import createHttpError from "http-errors";
 import { config } from 'dotenv';
+import cors from 'cors';
+
+import postsRouter from './routes/posts.routes';
+import { connectToMongoDB } from "./config/mongodb";
 
 // Dotenv configuration
 config();
 
 // Initialize express App
 const app: Application = express();
+
+connectToMongoDB();
+app.use(express.json()); //  Middleware to parse JSON request data
+app.use(cors()); // Cors middleware to enable CORS support
+
+
+app.use('/api/posts', postsRouter);
 
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => { 
@@ -19,7 +30,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next( new createHttpError.NotFound())
 })
 
-// Error Handler with http-errors(middleware)
+// Error Handler (middleware)
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   res.status(err.status || 500)
   res.send({
@@ -32,4 +43,4 @@ app.use(errorHandler);
 
 const PORT: Number = Number(process.env.PORT) || 4005;
 
-const server: Server = app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨`));
+const server: Server = app.listen(PORT, () => console.log(`The server started in: ${PORT} 😁✨`));
