@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createPosts, deletePostById, getAllPosts, getLatestPostByCategory, getPostById, updatePostById } from "../controllers/posts.controller";
-import { authValidation } from "../middleware/login-validation";
+import { authValidation } from "../middleware/token-validation";
 
 
 const router: Router = Router();

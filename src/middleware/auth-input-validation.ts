@@ -43,9 +43,9 @@ export const signUpValidation = () => {
 
 export const loginValidation = () => {
   return [
-    body('email', 'Please enter a valid email address')
-      .isEmail()
-      .normalizeEmail(),
+    body('username', 'Please enter a username')
+      .notEmpty()
+      .trim(),
     body('password').notEmpty().withMessage('Password field cannot be empty'),
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);
