@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Post from '../models/mongo.posts';
+import Post from '../models/posts.model';
 import createError from 'http-errors';
 
 // To create new posts
@@ -45,7 +45,7 @@ export async function getPostById(
     const post = await Post.findById(id);
   
     if (!post) {
-      throw createError.NotFound('Post Not Found! 😶‍🌫️');
+      throw createError.NotFound('Post Not Found!');
     }
     res.json(post);
   } catch (error) {
@@ -61,7 +61,7 @@ export async function updatePostById(req: Request, res: Response, next: NextFunc
     const { id }  = req.params;
     const UpdatedPost = await Post.findByIdAndUpdate(id, { title, content, category_id }, { new: true });
     if (!UpdatedPost) {
-      throw createError.NotFound('Post Not Found! 😶‍🌫️');
+      throw createError.NotFound('Post Not Found!');
     }
     res.status(200).send({message: "Post updated successfully!"})
   } catch (error) {
@@ -75,7 +75,7 @@ export async function deletePostById(req: Request, res: Response, next: NextFunc
   const { id } = req.params;
   try {
     const deletedPost = await Post.findByIdAndDelete(id);
-    if (!deletedPost) throw createError.NotFound('Post Not Found! 😶‍🌫️'); // Add "throw" keyword here
+    if (!deletedPost) throw createError.NotFound('Post Not Found!'); // Add "throw" keyword here
     res.status(200).send({ message: "Post deleted Successfully!" });
   } catch (error) {
     console.error(error);

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createPosts, deletePostById, getAllPosts, getLatestPostByCategory, getPostById, updatePostById } from "../controllers/posts.controller";
+import { authValidation } from "../middleware/login-validation";
 
 
 const router: Router = Router();
@@ -8,7 +9,7 @@ const router: Router = Router();
 router.post('/', createPosts);
 
 // To find the latest blog post corresponding to category
-router.get('/latest', getLatestPostByCategory);
+router.get('/latest',authValidation, getLatestPostByCategory);
 
 // To get posts By id
 router.get('/:id', getPostById);
