@@ -1,3 +1,6 @@
 node_modules/
 .env
 dist/
+jest.config.js
+__tests__
+.babelrc

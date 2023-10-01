@@ -1,4 +1,3 @@
-// connectMySQL.ts
 import sequelize from "./sequelize";
 
 export async function connectMySQL() {

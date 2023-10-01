@@ -19,7 +19,7 @@ import { connectMySQL } from './config/connectSQL';
 config();
 
 // Initialize express App
-const app: Application = express();
+export const app: Application = express();
 
 // Function to start the server
 async function startServer() {
