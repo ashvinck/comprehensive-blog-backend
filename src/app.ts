@@ -60,7 +60,6 @@ async function startServer() {
     );
   } catch (error) {
     console.error('Error connecting to databases', error);
-    process.exit(1);
   }
 }
 
