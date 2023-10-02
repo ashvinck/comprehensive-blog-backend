@@ -35,7 +35,7 @@ async function startServer() {
     app.use('/auth', authRouter);  // Auth author
 
     app.get('/', (req: Request, res: Response, next: NextFunction) => {
-      res.send('Hello from Blog!');
+      res.status(200).send('Hello from Blog!');
     });
 
     // 404 Error handling

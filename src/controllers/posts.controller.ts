@@ -12,7 +12,7 @@ export async function createPosts(
     const { title, content, category_id } = req.body;
     const post = new Post({ title, content, category_id });
     const savedPost = await post.save();
-    res.status(201).send({ message: 'Post created successfully!' });
+    res.status(200).send({ message: 'Post created successfully!' });
   } catch (error) {
     console.error(error);
     next(error);

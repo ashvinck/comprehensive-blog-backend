@@ -17,12 +17,12 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>>{
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     username: {
-      type: DataTypes.STRING(128),
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },

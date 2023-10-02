@@ -1,11 +1,10 @@
-// sequelize.ts
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
 config();
 
 
 const sequelize = new Sequelize({
-  database: 'comprehensive_blog',
+  database: 'mysql',
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   host: 'localhost',
