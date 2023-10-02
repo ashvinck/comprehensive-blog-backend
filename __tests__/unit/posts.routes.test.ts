@@ -3,23 +3,28 @@ import mongoose from 'mongoose';
 import { app } from '../../src/app';
 import { connectToMongoDB } from '../../src/config/mongodb';
 import postsModel from '../../src/models/posts.model';
+import { signAccessToken } from '../../src/utilities/jwt.sign';
+import { connectMySQL } from '../../src/config/connectSQL';
+import sequelize from '../../src/config/sequelize';
 
 beforeAll(async () => {
   await connectToMongoDB();
+  await connectMySQL();
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
+   await sequelize.close();
 });
 
 describe('Express API Endpoints', () => {
 
   // Test POST / (Create a new blog post)
-  describe('POST /', () => {
-    it('should create a new blog post', async () => {
+  describe('POST /api/posts', () => {
+    it('It should create a new blog post', async () => {
       const postData = {
-        title: 'Test Post',
-        content: 'This is a test post content',
+        title: 'Post 1',
+        content: 'Content 1',
         category_id: 'category1',
       };
 
@@ -31,16 +36,16 @@ describe('Express API Endpoints', () => {
       expect(response.body.message).toBe('Post created successfully!');
 
       // Verify that the post was actually created in the database
-      const createdPost = await postsModel.findOne({ title: 'Test Post' });
-      expect(createdPost).not.toBeNull();
-      expect(createdPost?.content).toBe('This is a test post content');
+      const createdPost = await postsModel.findOne({ title: 'Post 1' });
+      expect(createdPost?.content).toBe('Content 1');
     });
   });
 
   // Test GET /latest (Get latest posts by category)
-  describe('GET /latest', () => {
+  describe('GET /api/posts/latest', () => {
     it('should return the latest posts by category', async () => {
       // Create sample posts in the test database
+      const jwt = signAccessToken("testuser")
       await postsModel.create([
         {
           title: 'Post 1',
@@ -53,16 +58,14 @@ describe('Express API Endpoints', () => {
           category_id: 'category2',
         },
       ]);
-
-      const response = await request(app).get('/api/posts/latest');
-
+      const response = await request(app).get('/api/posts/latest').set("authorization",`Bearer ${jwt}`);
       expect(response.status).toBe(200);
-      // Add assertions to verify the response content as needed
+      
     });
   });
 
   // Test GET /:id (Get post by ID)
-  describe('GET /:id', () => {
+  describe('GET /api/posts/:id', () => {
     it('should return a post by ID', async () => {
       // Create a sample post in the test database
       const createdPost = await postsModel.create({
@@ -79,7 +82,7 @@ describe('Express API Endpoints', () => {
   });
 
   // Test PUT /:id (Update post by ID)
-  describe('PUT /:id', () => {
+  describe('PUT /api/posts/:id', () => {
     it('should update a post by ID', async () => {
       // Create a sample post in the test database
       const createdPost = await postsModel.create({
